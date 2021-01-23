@@ -1,0 +1,9 @@
+[bind9]
+192.168.245.129 ansible_port=22 ansible_ssh_user=root ansible_ssh_pass=123456 
+
+[nginx]
+192.168.245.129 ansible_port=22 ansible_ssh_user=root ansible_ssh_pass=123456
+
+
+[mysql]
+mysql-master ansible_host=192.168.245.129 ansible_port=22 ansible_ssh_user=root ansible_ssh_pass=123456

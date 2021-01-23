@@ -1,0 +1,43 @@
+---
+- name: Create bind dirs
+  file:
+    state: directory
+    path: "{{ dir_item.dir }}"
+    owner: "{{ dir_item.owner }}"
+    group: "{{ dir_item.group }}"
+  with_items:
+    - dir: "{{ bind9_work_dir }}/etc"
+      owner: "0"
+      group: "106"
+    - dir: "{{ bind9_work_dir }}/var"
+      owner: "105"
+      group: "106"
+  loop_control:
+    loop_var: dir_item
+
+- name: Configure bind9 etc
+  template:
+    src: "{{ bind_item.src }}"
+    dest: "{{ bind_item.dest }}"
+    owner: "105"
+    group: "106"
+  with_items:
+    - src: rndc.conf
+      dest: "{{ bind9_work_dir }}/etc/rndc.conf" 
+    - src: named.conf.j2
+      dest: "{{ bind9_work_dir }}/etc/named.conf"
+  loop_control:
+    loop_var: bind_item
+
+- name: Configure bind9 zone file
+  template:
+    src: "{{ bind2_item.src }}"
+    dest: "{{ bind2_item.dest }}"
+    owner: "105"
+    group: "106"
+    force: no
+  with_items:
+    - src: example.zone.j2
+      dest: "{{ bind9_work_dir }}/var/{{ domain }}.zone"
+  loop_control:
+    loop_var: bind2_item

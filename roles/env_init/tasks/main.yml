@@ -1,0 +1,27 @@
+---
+#- name: check if env_init task already excuted
+#  uri:
+#    url: "http://{{ groups['consul'][0] }}:{{ consul_port }}/v1/kv/{{ inventory_hostname }}_env_init"
+#    method: GET
+#    return_content: yes
+#    status_code:
+#      - 200
+#      - 404
+#  register: _result
+
+- name: include env_init roles
+  include_role:
+    name: "{{ role_item }}"
+  loop:
+    - env_init/system/firewalld
+    - env_init/system/selinux
+    - env_init/system/sysctl
+    - env_init/system/ulimit
+    - env_init/createuser
+    - env_init/createdir
+    - env_init/jdk
+    - env_init/python-virtualenv
+    - env_init/modify_resolv.conf
+  loop_control:
+    loop_var: role_item
+#  when: ( _result.status == 404 ) or ( _result.status == 200 and _result.json[0].Value|b64decode != "true" )

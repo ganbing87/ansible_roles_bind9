@@ -1,0 +1,25 @@
+key "rndc-key" {
+	algorithm hmac-sha256;
+	secret "Q9MQ9g21NCsiFB0jHJMLZ4HpkF7fKClXdnnA3/n4aEE=";
+};
+
+controls {
+	inet 127.0.0.1 port 953
+		allow { 127.0.0.1; } keys { "rndc-key"; };
+};
+
+
+options {
+        directory "/var/cache/bind";
+	 pid-file "named.pid"; 
+};
+
+zone "jddglobal.local" {
+        type master;
+        file "jddglobal.local.zone";
+};
+ 
+zone "{{ domain }}" {
+        type master;
+        file "{{ domain }}.zone";
+};

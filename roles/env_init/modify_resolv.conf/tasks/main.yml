@@ -1,0 +1,19 @@
+- name: Insert dnsserver into resolv.conf
+  lineinfile:
+    firstmatch: yes
+    path: /etc/resolv.conf
+    insertbefore: "^nameserver"
+    line: "nameserver {{ dns_item }}"
+  with_items:
+    - "{{ groups['bind9'] }}"
+  loop_control:
+    loop_var: dns_item
+
+
+##下面这段配置的意思是，当你内部有consul服务器的时候，把信息注册到consul服务，如果有consul就放开此配置，并在hosts主机清单文件添加主机：consul、ansible_host
+#- name: put k/v to consul
+#  uri:
+#    url: "http://{{ groups['consul'][0] }}:{{ consul_port }}/v1/kv/{{ ansible_host }}_env_init"
+#    method: PUT
+#    body_format: json
+#    body: true

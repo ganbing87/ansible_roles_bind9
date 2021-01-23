@@ -1,0 +1,70 @@
+#--------------------Global Configuration-------------------------
+install_dir: "/export/server"
+softlink_dir: "/export"
+local_packages_dir: "/data/packages"
+remote_packages_dir: "/export/packages"
+ssh_user: "root"
+appuser: "zhangsan"
+limit_nofile: "65536"
+limit_nproc: "131072"
+domain: "ganbing.cnn"
+test01_fqdn_hostname: "test01"
+test02_fqdn_hostname: "test02"
+mysql_fqdn_hostname: "mysql"
+
+#--------------------jdk configuration-------------------------
+jdk8_version: "202"
+
+#-------------------Bind Configuration-------------------------
+bind_version: "9.16"
+bind9_work_dir: "/export/bind9"
+
+#--------------------docker configuration-------------------------
+docker_version: 18.06.2-ce
+docker_data_dir: /export/lib/docker
+
+#--------------------system configuration-------------------------
+kernel_config:
+   - name: net.ipv4.ip_forward
+     value: 1
+   - name: net.ipv4.tcp_tw_recycle
+     value: 0
+   - name: vm.swappiness
+     value: 0
+   - name: vm.overcommit_memory
+     value: 1
+   - name: vm.panic_on_oom
+     value: 0
+   - name: vm.max_map_count
+     value: 262144
+   - name: fs.inotify.max_user_instances
+     value: 8192
+   - name: fs.inotify.max_user_watches
+     value: 1048576
+   - name: fs.file-max
+     value: 52706963
+   - name: net.ipv6.conf.all.disable_ipv6
+     value: 1
+   - name: net.ipv6.conf.default.disable_ipv6
+     value: 1
+   - name: net.ipv6.conf.lo.disable_ipv6
+     value: 1
+
+ulmit_config:
+  - limit_domain: "*"
+    limit_type: "soft"
+    limit_item: "nofile"
+    limit_value: "{{ limit_nofile }}"
+  - limit_domain: "*"
+    limit_type: "hard"
+    limit_item: "nofile"
+    limit_value: "{{ limit_nofile }}"
+  - limit_domain: "*"
+    limit_type: "soft"
+    limit_item: "nproc"
+    limit_value: "{{ limit_nproc }}"
+  - limit_domain: "*"
+    limit_type: "hard"
+    limit_item: "nproc"
+    limit_value: "{{ limit_nproc }}"
+

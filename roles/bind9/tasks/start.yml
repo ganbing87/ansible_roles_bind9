@@ -1,0 +1,35 @@
+- name: start bind9 docker container
+  community.general.docker_container:
+    name: bind9
+    image: internetsystemsconsortium/bind9:{{ bind_image_version }}
+    restart_policy: always
+    container_default_behavior: no_defaults
+    published_ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 127.0.0.1:953:953/tcp
+    volumes:
+      - "{{ bind9_work_dir }}/etc:/etc/bind"
+      - "{{ bind9_work_dir }}/var:/var/cache/bind"
+
+- name: Wait for bind9 to start
+  wait_for:
+    host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+    port: "53"
+    timeout: 30
+
+###下面的任务是，当bind服务启动后，注册到consul中心，如果你的环境中有consul服务，则开启下面的配置
+#- name: Register bind9 to consul
+#  uri:
+#    url: "http://{{ groups['consul'][0] }}:{{ consul_port }}/v1/agent/service/register"
+#    method: PUT
+#    body_format: json
+#    body:
+#      Name: bind9
+#      ID: "bind9_{{ inventory_hostname }}"
+#      Address: "{{ inventory_hostname }}"
+#      Port: 53
+#      Check:
+#        DeregisterCriticalServiceAfter: "5m"
+#        TCP: "{{ inventory_hostname }}:53"
+#        Interval: "5s"

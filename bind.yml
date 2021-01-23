@@ -1,0 +1,29 @@
+- hosts: bind9
+  become: yes
+  gather_facts: false
+  roles:
+    - env_init/system/firewalld
+    - env_init/system/selinux
+    - env_init/system/sysctl
+    - env_init/system/ulimit
+    - env_init/createuser
+    - env_init/createdir
+    - env_init/jdk
+    - env_init/python-virtualenv
+    - env_init/modify_resolv.conf
+  tags:
+    - env_init
+
+- hosts: bind9
+  become: yes
+  become_method: sudo
+  become_user: root
+  become_flags: '-i'
+  gather_facts: false
+  roles:
+    - docker
+    - bind9
+    - init_bindzone_conf/test
+  tags:
+    - bind9
+

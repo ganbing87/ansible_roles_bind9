@@ -1,0 +1,40 @@
+- name: Copy install packages to remote
+  copy:
+    src: "{{ local_packages_dir }}/docker-{{ docker_version }}.tgz"
+    dest: "{{ remote_packages_dir }}/docker-{{ docker_version }}.tgz"
+
+- name: Unpack archive
+  unarchive:
+    src: "{{ remote_packages_dir }}/docker-{{ docker_version }}.tgz"
+    dest: "{{ remote_packages_dir }}"
+    remote_src: yes
+    creates: "{{ remote_packages_dir }}/docker"
+
+- name: Copy docker bin file to /usr/bin/
+  copy:
+    src: "{{ remote_packages_dir }}/docker/{{ docker_item }}"
+    dest: "/usr/bin/"
+    remote_src: yes
+    mode: 0755
+  with_items:
+    - docker
+    - docker-containerd-ctr
+    - dockerd
+    - docker-proxy
+    - docker-containerd
+    - docker-containerd-shim
+    - docker-init
+    - docker-runc
+  loop_control:
+    loop_var: docker_item
+
+- name: Check if systemd exists
+  stat: path=/usr/lib/systemd/system/
+  register: systemd_check
+
+- name: Add systemctl start service file
+  template:
+    src: docker.service
+    dest: /usr/lib/systemd/system/docker.service
+    mode: 0644
+  when: "systemd_check.stat.exists == true"

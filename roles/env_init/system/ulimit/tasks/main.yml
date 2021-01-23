@@ -1,0 +1,7 @@
+- name: set limits
+  pam_limits:
+    domain: "{{ item.limit_domain }}"
+    value: '{{ item.limit_value }}'
+    limit_item: '{{ item.limit_item }}'
+    limit_type: '{{ item.limit_type }}'
+  with_items: "{{ ulmit_config }}"

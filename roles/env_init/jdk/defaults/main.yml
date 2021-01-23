@@ -1,0 +1,3 @@
+jdk8_version: "202"
+install_dir: /export/server
+jdk_base_dir: "{{install_dir}}/jdk1.8.0_{{ jdk8_version }}"

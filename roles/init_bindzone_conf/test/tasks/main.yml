@@ -1,0 +1,33 @@
+- name: set list variable
+  set_fact:
+    nginx_fqdn_hostname_list:
+      - "{{ test01_fqdn_hostname }}"
+      - "{{ test02_fqdn_hostname }}"
+
+- name: Insert nginx dns record
+  lineinfile:
+    path: "{{ bind9_work_dir }}/var/{{ domain }}.zone"
+    state: present
+    line: "{{ dns_item[0] }}    IN    A     {{ dns_item[1] }}"
+  with_nested:
+    - "{{ nginx_fqdn_hostname_list }}"
+    - "{{ groups['nginx'] }}"
+  loop_control:
+    loop_var: dns_item
+
+- name: Insert mysql dns record
+  lineinfile:
+    path: "{{ bind9_work_dir }}/var/{{ domain }}.zone"
+    state: present
+    line: "{{ mysql_fqdn_hostname }}    IN    A     {{ hostvars['mysql-master'].ansible_host }}"
+
+- name: set 'ansible_python_interpreter' variable
+  set_fact:
+    ansible_python_interpreter: "{{ softlink_dir }}/python-virtualenv/bin/python"
+
+- name: Restart bind9 docker container
+  community.general.docker_container:
+    container_default_behavior: no_defaults
+    name: bind9
+    state: started
+    restart: yes

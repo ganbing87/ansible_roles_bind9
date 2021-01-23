@@ -1,0 +1,21 @@
+---
+###下面的任务是在consule中检查有没有安装bind服务，如果你的环境是部署了consul，则可以开启此注释
+#- name: check bind9 service helath in consul
+#  uri:
+#    url: "http://{{ groups['consul'][0] }}:{{ consul_port }}/v1/agent/health/service/id/bind9_{{ inventory_hostname }}?format=text"
+#    method: GET
+#    return_content: yes
+#    status_code:
+#      - 200
+#      - 404
+#      - 503
+#  register: healthCheck
+
+- name: include tasks
+  include_tasks:
+    "{{ item }}"
+  with_items:
+    - install.yml
+    - configure.yml
+    - start.yml
+#  when: healthCheck.content != "passing"

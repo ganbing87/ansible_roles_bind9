@@ -1,0 +1,42 @@
+---
+- name: check if exists {{ jdk_base_dir }}
+  stat: path={{ jdk_base_dir }}
+  register: dir_check_result
+
+- name: check if {{ jdk_base_dir }} already exist as a regular file
+  fail:
+    msg: "{{ jdk_base_dir }} already exist as not a directory ,please check it first"
+  when: dir_check_result.stat.isdir is defined and dir_check_result.stat.isdir == false
+
+- name: copy packages
+  copy:
+    src: "{{ local_packages_dir }}/jdk-8u{{ jdk8_version }}-linux-x64.tar.gz"
+    dest: "{{ remote_packages_dir }}/jdk-8u{{ jdk8_version }}-linux-x64.tar.gz"
+
+- name: Unpack tarball.
+  unarchive:
+    src: "{{ remote_packages_dir }}/jdk-8u{{ jdk8_version }}-linux-x64.tar.gz"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+  when: dir_check_result.stat.isdir is not defined
+
+- name: create soft_link
+  file:
+    src: "{{ jdk_base_dir }}"
+    dest: "{{ softlink_dir }}/jdk"
+    state: link
+
+- name: check if /export/local/jdk1.8 already exists as not a softlink
+  stat:
+    path: /export/local/jdk1.8
+  register: file_check_result
+
+- name: create soft_link to /export/local
+  file:
+    src: "{{ jdk_base_dir }}"
+    dest: "/export/local/jdk1.8"
+    state: link
+  when: file_check_result.stat.islnk is not defined
+
+- name: Change ownership on jdk directory.
+  file: path={{ jdk_base_dir }} state=directory owner=root group=root recurse=yes

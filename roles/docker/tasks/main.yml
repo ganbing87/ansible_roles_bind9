@@ -1,0 +1,26 @@
+---
+###下面这个任务是从consul服务检查docker有没有注册（也就是docker服务有没有注册到console当中），如果你的环境有consul服务，可以打开下面的注释
+#- name: check if docker has already installed
+#  uri:
+#    url: "http://{{ groups['consul'][0] }}:{{ consul_port }}/v1/kv/{{ inventory_hostname }}_docker"
+#    method: GET
+#    return_content: yes
+#    status_code:
+#      - 200
+#      - 404
+#  register: _result
+
+- name: Check docker daemon health
+  shell: docker images
+  no_log: true
+  ignore_errors: yes
+  register: docker_images_result
+
+- name: include tasks
+  include_tasks: "{{ item }}"
+  with_items:
+    - install.yml
+    - configure.yml
+    - start.yml
+#  when: ( _result.status == 404 ) or ( _result.status == 200 and _result.json[0].Value|b64decode != "true" ) or ( docker_images_result is failed )
+  when: docker_images_result is failed 

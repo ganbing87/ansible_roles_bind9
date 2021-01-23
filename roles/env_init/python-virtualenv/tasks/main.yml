@@ -1,0 +1,16 @@
+---
+- name: copy packages
+  copy:
+    src: "{{ local_packages_dir }}/python-virtualenv.tar.gz"
+    dest: "{{ remote_packages_dir }}"
+
+- name: Unpack tarball.
+  unarchive:
+    remote_src: yes
+    src: "{{ remote_packages_dir }}/python-virtualenv.tar.gz"
+    dest: "{{ softlink_dir }}"
+    creates: "{{ softlink_dir }}/python-virtualenv"
+
+- name: set 'ansible_python_interpreter' variable
+  set_fact:
+    ansible_python_interpreter: "{{ softlink_dir }}/python-virtualenv/bin/python"

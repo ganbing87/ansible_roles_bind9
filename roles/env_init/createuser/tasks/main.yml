@@ -1,0 +1,2 @@
+- group: name={{appuser}} system=yes
+- user: name={{appuser}} group={{appuser}} system=yes

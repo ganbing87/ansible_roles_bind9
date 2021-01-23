@@ -1,0 +1,26 @@
+- name: Check dirs if exists
+  stat:
+    path: "{{ softlink_dir }}/packages"
+  register: dir_exist_result
+
+- name: exit when fail
+  fail:
+    msg: "dir '{{ softlink_dir }}/packages' doesn't exist,please make sure 'env_init' task has been executed successfully" 
+  when: ( dir_exist_result.stat.isdir is not defined ) or ( dir_exist_result.stat.isdir is defined and dir_exist_result.stat.isdir == false)
+
+- name: set 'ansible_python_interpreter' variable
+  set_fact:
+    ansible_python_interpreter: "{{ softlink_dir }}/python-virtualenv/bin/python"
+
+- name: Copy bind9 docker images
+  copy:
+    src: "{{ local_packages_dir }}/bind-{{ bind_image_version }}.tar"
+    dest: "{{ remote_packages_dir }}/bind-{{ bind_image_version }}.tar"
+
+- name: Load bind9 docker image
+  community.general.docker_image:
+    name: internetsystemsconsortium/bind9
+    tag: "{{ bind_image_version }}"
+    state: present
+    source: load
+    load_path: "{{ remote_packages_dir }}/bind-{{ bind_image_version }}.tar" 

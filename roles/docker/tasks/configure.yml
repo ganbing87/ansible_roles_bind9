@@ -1,0 +1,15 @@
+- name: Create dirs
+  file:
+    path: "{{ dir_item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ docker_data_dir }}"
+    - /etc/docker/
+  loop_control:
+    loop_var: dir_item
+
+- name: Configure daemon.json
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json

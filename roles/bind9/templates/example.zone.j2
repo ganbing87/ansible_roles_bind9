@@ -1,0 +1,6 @@
+$TTL 600
+@        IN        SOA        ns.{{ domain }}. admin.{{ domain }}. ( 2020031001 2H 10M 7D 1D )
+@        IN        NS         ns.{{ domain }}.
+{% for bindserver in groups['bind9'] %}
+ns       IN        A        {{ bindserver }}
+{% endfor %}

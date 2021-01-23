@@ -1,0 +1,19 @@
+- name: create dirs that are needed by components
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{ install_dir }}"
+    - "{{ softlink_dir }}"
+    - "{{ remote_packages_dir }}"
+    - /export/local
+
+- name: create dirs that are needed by components
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ appuser }}"
+    group: "{{ appuser }}"
+  with_items:
+    - "/export/data"

@@ -1,0 +1,14 @@
+- name: Start docker
+  systemd:
+    name: docker
+    state: started
+    daemon_reload: yes
+
+
+###下面的任务是，当docker启动成功后，把信息注册到consul服务，如果你的环境中存在consul，则可以开启此任务
+#- name: put k/v to consul
+#  uri:
+#    url: "http://{{ groups['consul'][0] }}:{{ consul_port }}/v1/kv/{{ inventory_hostname }}_docker"
+#    method: PUT
+#    body_format: json
+#    body: true
