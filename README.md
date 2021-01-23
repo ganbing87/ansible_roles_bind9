@@ -29,6 +29,7 @@
 # 安装步骤
 以下安装以centos 7为例进行操作，以下操作均在ansible机器上操作.  
 ## 1、准备ansilbe环境
+### 1.1 安装ansible
 ```
 #备份旧yum源
 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
@@ -45,6 +46,7 @@ yum -y python-setuptools python2-pip bash-completion bind-utils net-tools iprout
 yum -y install ansible
 ```
 
+### 1.2 安装community.general模块
 ```
 #安装ansible通用模块，后面用调用docker相关的模块，这是在线安装
 ansible-galaxy collection install community.general
