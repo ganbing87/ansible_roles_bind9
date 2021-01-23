@@ -45,6 +45,14 @@ yum -y python-setuptools python2-pip bash-completion bind-utils net-tools iprout
 yum -y install ansible
 ```
 
+```
+#安装ansible通用模块，后面用调用docker相关的模块，这是在线安装
+ansible-galaxy collection install community.general
+```
+模块安装参说明，参考相关网站：
+  - https://docs.ansible.com/ansible/latest/collections/community/general/docker_container_info_module.html
+  - https://www.cnblogs.com/lisenlin/p/10919068.html
+
 
 ## 2、创建安装包目录、上传软件包
 ```
