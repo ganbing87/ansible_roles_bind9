@@ -61,7 +61,12 @@ yum -y install ansible
 
 > 软件包请联系笔者下载（QQ 312683629）
 
-## 3、修改变量配置文件all.yml
+## 3、下载此项目
+```
+git clone https://github.com/ganbing87/ansible_roles_bind9.git
+```
+
+## 4、修改变量配置文件all.yml
 ```
 
 ```
