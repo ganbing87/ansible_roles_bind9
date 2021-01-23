@@ -59,4 +59,9 @@ yum -y install ansible
 [root@localhost packages]# 
 ```
 
-> 软件包请联系笔者QQ 312683629 下载
+> 软件包请联系笔者下载（QQ 312683629）
+
+## 3、修改变量配置文件all.yml
+```
+
+```
