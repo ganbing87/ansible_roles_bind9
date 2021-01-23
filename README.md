@@ -46,7 +46,17 @@ yum -y install ansible
 ```
 
 
-## 2、创建安装包上传目录
+## 2、创建安装包目录、上传软件包
 ```
 # mkdir -p /data/packages
+
+# ll
+总用量 515280
+-rw-r--r--. 1 root root 255131648 1月  22 20:11 bind-9.16.tar
+-rw-r--r--. 1 root root  43834194 1月  22 20:10 docker-18.06.2-ce.tgz
+-rw-r--r--. 1 root root 194042837 1月  22 20:12 jdk-8u202-linux-x64.tar.gz
+-rw-r--r--. 1 root root  34632262 1月  22 20:12 python-virtualenv.tar.gz
+[root@localhost packages]# 
 ```
+
+> 软件包请联系笔者QQ 312683629 下载
