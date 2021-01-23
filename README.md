@@ -2,7 +2,6 @@
 - 通过ansbile一键自动化部署bind9 dns服务。
 - 适用平台centos、redhat系统。
 - 本项目是基于ansible roles角色的结构来实现的。
-***
 
 # ansible roles说明
   角色（roles）是ansible自1.2版本开始引入的新特性，用于层次性，结构化地组织playbook.  
@@ -24,9 +23,27 @@
     - defaults： 为当前角色设定默认变量时使用此目录；应当包含一个main.yml文件；
     - tasks：至少应该包含一个名为main.yml的文件，其定义了此角色的任务列表；此文件可以使用include包含其他的位于此目录中的task文件；
     - templates：templates模块会自动在此目录中寻找Jinja2模板文件；
+ 
+***
 
 # 安装步骤
 ## 1、准备ansilbe环境
+```
+#备份旧yum源
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+
+#下载新的CentOS-Base.repo 到/etc/yum.repos.d/
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+yum clean all
+
+#安装依赖包和工具包
+yum -y python-setuptools python2-pip bash-completion bind-utils net-tools iproute telnet curl wget nmap vim jq gettext e2fsprogs
+
+#安装ansible
+yum -y install ansible
+```
+
 
 ## 2、创建安装包上传目录
 ```
