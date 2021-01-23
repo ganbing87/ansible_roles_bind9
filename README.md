@@ -10,7 +10,8 @@
   
 # 目录结构说明
 - group_vars：存放变量的目录
-- bind9.yml: ansbile-playbook调用的入口文件
+- inventories：主机清单目录
+- bind.yml: ansbile-playbook调用的入口文件
 - roles：角色目录
   - env_init：自定义的初始化系统角色目录，此角色里面包含了创建用户、安装jdk、修改resolve.conf、关闭防火墙及selinux、修改ulimit等功能的其它角色；
     - createdir: 创建安装目录角色
