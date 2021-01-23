@@ -1,5 +1,5 @@
 # 项目说明
-- 通过ansbile一键自动化部署bind9 dns服务。
+- 通过ansbile一键自动化部署bind9 dns服务，项目其包含两大功能：初始化系统操作（如关闭防火墙及selinux、安装jdk、修改ulimit参数、修改sysctl参数等）、安装docker及启动bind服务容器。
 - 适用平台centos、redhat系统。
 - 本项目是基于ansible roles角色的结构来实现的。
 
