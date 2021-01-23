@@ -49,6 +49,7 @@ yum -y install ansible
 #安装ansible通用模块，后面用调用docker相关的模块，这是在线安装
 ansible-galaxy collection install community.general
 ```
+安装完成后，会把模块生成到/root/.ansible/collections/ansible_collections目录下.  
 模块安装参说明，参考相关网站：
   - https://docs.ansible.com/ansible/latest/collections/community/general/docker_container_info_module.html
   - https://www.cnblogs.com/lisenlin/p/10919068.html
@@ -80,3 +81,93 @@ git clone https://github.com/ganbing87/ansible_roles_bind9.git
 # vim /etc/ansible/ansible.cfg 
 host_key_checking = False
 ```
+
+## 5、修改inventories/hosts文件
+```
+# vim inventories/hosts
+[bind9]
+192.168.245.129 ansible_port=22 ansible_ssh_user=root ansible_ssh_pass=123456
+
+[nginx]
+192.168.245.129 ansible_port=22 ansible_ssh_user=root ansible_ssh_pass=123456
+
+[mysql]
+mysql-master ansible_host=192.168.245.129 ansible_port=22 ansible_ssh_user=root ansible_ssh_pass=123456
+```
+说明：此项目是安装bind，但是也多了nginx、mysql这两个主机的配置，主要是后面安装好bind之后，会关联这两个主机的信息写入到DNS记录中，便于测试用，上面主要修改IP、密码即可进行测试。这3台主机信息的IP可以同时指向一台机器，也可以指向不同的机器。
+
+## 6、修改全局变量文件all.yml
+```
+# vim group_vars/all.yml
+#--------------------Global Configuration-------------------------
+install_dir: "/export/server"     # 被管理主机，安装程序软件的目录
+softlink_dir: "/export"           # 被管理主机，软件程序软链接目录
+local_packages_dir: "/data/packages"        # ansilbe主机，本地安装包上传目录，需要手动创建此目录
+remote_packages_dir: "/export/packages"     # 被管理主机，安装包存放目录
+ssh_user: "root"                # 用于ansible主机ssh到被管理主机的用户
+appuser: "zhangsan"             # 用于自动在被管理机器上创建的普通用户
+limit_nofile: "65536"           # 用于下面system configuratio配置中引用的变量
+limit_nproc: "131072"           # 用于下面system configuratio配置中引用的变量
+domain: "ganbing.cnn"           # 定义一个测试的一级域名
+test01_fqdn_hostname: "test01"    # 定义一个测试的二级域名1
+test02_fqdn_hostname: "test02"    # 定义一个测试的二级域名2
+mysql_fqdn_hostname: "mysql"      # 定义一个mysql测试的二级域名
+
+#--------------------jdk configuration-------------------------
+jdk8_version: "202"   # jdk的版本号，需要核实下jdk包的版本是否和这一致
+
+#-------------------Bind Configuration-------------------------
+bind_version: "9.16"                # bind镜像包的版本号
+bind9_work_dir: "/export/bind9"     # 定义bind安装后的目录
+
+#--------------------docker configuration-------------------------
+docker_version: 18.06.2-ce            # docker镜像包的版本号
+docker_data_dir: /export/lib/docker   # 定义docker安装后的目录
+
+#--------------------system configuration-------------------------
+kernel_config:
+   - name: net.ipv4.ip_forward
+     value: 1
+   - name: net.ipv4.tcp_tw_recycle
+     value: 0
+   - name: vm.swappiness
+     value: 0
+   - name: vm.overcommit_memory
+     value: 1
+   - name: vm.panic_on_oom
+     value: 0
+   - name: vm.max_map_count
+     value: 262144
+   - name: fs.inotify.max_user_instances
+     value: 8192
+   - name: fs.inotify.max_user_watches
+     value: 1048576
+   - name: fs.file-max
+     value: 52706963
+   - name: net.ipv6.conf.all.disable_ipv6
+     value: 1
+   - name: net.ipv6.conf.default.disable_ipv6
+     value: 1
+   - name: net.ipv6.conf.lo.disable_ipv6
+     value: 1
+
+ulmit_config:
+  - limit_domain: "*"
+    limit_type: "soft"
+    limit_item: "nofile"
+    limit_value: "{{ limit_nofile }}"
+  - limit_domain: "*"
+    limit_type: "hard"
+    limit_item: "nofile"
+    limit_value: "{{ limit_nofile }}"
+  - limit_domain: "*"
+    limit_type: "soft"
+    limit_item: "nproc"
+    limit_value: "{{ limit_nproc }}"
+  - limit_domain: "*"
+    limit_type: "hard"
+    limit_item: "nproc"
+    limit_value: "{{ limit_nproc }}"
+
+```
+说明：主要修改-Global Configuratio 相关的配置信息，
