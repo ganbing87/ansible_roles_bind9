@@ -24,3 +24,11 @@
     - defaults： 为当前角色设定默认变量时使用此目录；应当包含一个main.yml文件；
     - tasks：至少应该包含一个名为main.yml的文件，其定义了此角色的任务列表；此文件可以使用include包含其他的位于此目录中的task文件；
     - templates：templates模块会自动在此目录中寻找Jinja2模板文件；
+
+# 安装步骤
+## 1、准备ansilbe环境
+
+## 2、创建安装包上传目录
+```
+# mkdir -p /data/packages
+```
