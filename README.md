@@ -204,3 +204,7 @@ getenforce
 # 查看防火墙是否关闭
 systemctl status firewalld
 ```
+### 小结
+> 如果您下载此项目，测试过后，觉得还有用，请支持一下辛苦的工作，多少随您的心意，您的支持将是我继续开源的动力，感谢提出宝贵的意见!
+![支付宝收款码](文档：个人收钱.note
+链接：http://note.youdao.com/noteshare?id=d99e0464ab502736f2c48a171a663020&sub=F229386AF6C04EDDB05A9A7B58D552FB)
