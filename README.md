@@ -207,4 +207,4 @@ systemctl status firewalld
 ### 小结
 如果您下载此项目，测试过后，觉得还有用，请支持一下辛苦的工作，多少随您的心意，您的支持将是我继续开源的动力，感谢提出宝贵的意见!  
 
-![支付宝收款码](http://note.youdao.com/noteshare?id=d99e0464ab502736f2c48a171a663020&sub=F229386AF6C04EDDB05A9A7B58D552FB)
+![支付宝收款码](https://github.com/ganbing87/markdown_picture/blob/ganbing87-patch-1/%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%B6%E6%AC%BE%E7%A0%81.jpg)
