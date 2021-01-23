@@ -66,7 +66,9 @@ yum -y install ansible
 git clone https://github.com/ganbing87/ansible_roles_bind9.git
 ```
 
-## 4、修改变量配置文件all.yml
+## 4、修改ansible.cfg
+修改host_key_checking = False ，其作用是取消对此的注释以禁用SSH密钥主机检查，如果ansbile管理主机和被管理端没有做ssh_key信任，把此参数打开，可以用密码进行管理主机
 ```
-
+# vim /etc/ansible/ansible.cfg 
+host_key_checking = False
 ```
