@@ -13,6 +13,14 @@
 - group_vars：存放变量的目录
 - bind9.yml: ansbile-playbook调用的入口文件
 - roles：角色目录
-  - env_init：自定义的初始化系统角色目录
+  - env_init：自定义的初始化系统角色目录，此角色里面包含了创建用户、安装jdk、修改resolve.conf、关闭防火墙及selinux、修改ulimit等功能的其它角色；
+    - createdir: 创建安装目录角色
+    - createuser： 创建用户的目录角色
+    - jdk：安装jdk 1.8的目录角色
+    - modify_resolv.conf：修改dns配置的目录角色
+    - system：设置系统防火墙、sysctl、ulimit参数等配置的目录角色
+    - tasks： 至少应该包含一个名为main.yml的文件，其定义了此角色的任务列表；此文件可以使用include包含其他的位于此目录中（如引用createdir、createuser等）的task文件；
   - bind9：bind服务角色目录
     - defaults： 为当前角色设定默认变量时使用此目录；应当包含一个main.yml文件；
+    - tasks：至少应该包含一个名为main.yml的文件，其定义了此角色的任务列表；此文件可以使用include包含其他的位于此目录中的task文件；
+    - templates：templates模块会自动在此目录中寻找Jinja2模板文件；
