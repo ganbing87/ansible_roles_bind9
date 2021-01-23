@@ -171,3 +171,33 @@ ulmit_config:
 
 ```
 说明：主要修改-Global Configuratio 相关的配置信息，
+
+
+## 7、执行ansible-playbook命令
+说明：执行命令前，先检查端口TCP和UDP的53是否被占用，如被占用，需杀掉相关进程，或者修改roles/bind9/tasks/start.yml文件，把53端口改为未被其它程序占用的端口.  
+```
+ansible-playbook -i inventories/hosts  bind.yml  -v
+```
+
+## 8、验证运行结果
+进入被管理主机通过以下方式进行结果验证：
+```
+# ping配置的域名是否通
+ping mysql.ganbing.cnn
+
+# 查看docker信息，如bind镜像，bind容器是否启动
+docker ps
+docker images
+
+# 查看/etc/sysctl.conf文件，是否写入了相关配置
+cat /etc/sysctl.conf
+
+# 查看limits.conf文件，是否写入了相关配置
+cat /etc/security/limits.conf
+
+# 查看selinux是否禁用
+getenforce
+
+# 查看防火墙是否关闭
+systemctl status firewalld
+```
