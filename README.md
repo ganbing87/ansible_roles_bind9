@@ -208,4 +208,4 @@ systemctl status firewalld
 如果你喜欢此项目，并且它对你确实有帮助，欢迎给我打赏一杯咖啡哈~  
 您的支持将是我继续开源的动力，感谢提出宝贵的意见!  
 
-![](https://i.loli.net/2021/01/24/MaFUGs6yx41b32C.jpg)
+![支付宝收款码.jpg](https://i.loli.net/2021/01/24/MaFUGs6yx41b32C.jpg)
